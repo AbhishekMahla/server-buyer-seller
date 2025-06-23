@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -31,51 +28,51 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relations
-  buyerProjects    Project[]  @relation("BuyerProjects")
-  sellerBids       Bid[]      @relation("SellerBids")
-  buyerReviews     Review[]   @relation("BuyerReviews")
-  sellerReviews    Review[]   @relation("SellerReviews")
+  buyerProjects Project[] @relation("BuyerProjects")
+  sellerBids    Bid[]     @relation("SellerBids")
+  buyerReviews  Review[]  @relation("BuyerReviews")
+  sellerReviews Review[]  @relation("SellerReviews")
 }
 
 model Project {
-  id            String        @id @default(uuid())
-  title         String
-  description   String
-  budgetMin     Float
-  budgetMax     Float
-  deadline      DateTime
-  status        ProjectStatus @default(PENDING)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  
+  id          String        @id @default(uuid())
+  title       String
+  description String
+  budgetMin   Float
+  budgetMax   Float
+  deadline    DateTime
+  status      ProjectStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
   // Relations
-  buyer         User          @relation("BuyerProjects", fields: [buyerId], references: [id])
-  buyerId       String
-  
+  buyer   User   @relation("BuyerProjects", fields: [buyerId], references: [id])
+  buyerId String
+
   bids          Bid[]
-  selectedBid   Bid?          @relation("SelectedBid", fields: [selectedBidId], references: [id], onDelete: SetNull)
-  selectedBidId String?       @unique
-  
-  deliverables  Deliverable[]
-  review        Review?
+  selectedBid   Bid?    @relation("SelectedBid", fields: [selectedBidId], references: [id], onDelete: SetNull)
+  selectedBidId String? @unique
+
+  deliverables Deliverable[]
+  review       Review?
 }
 
 model Bid {
-  id                  String    @id @default(uuid())
+  id                  String   @id @default(uuid())
   bidAmount           Float
   estimatedCompletion DateTime
   message             String
-  createdAt           DateTime  @default(now())
-  updatedAt           DateTime  @updatedAt
-  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+
   // Relations
-  project             Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId           String
-  
-  seller              User      @relation("SellerBids", fields: [sellerId], references: [id])
-  sellerId            String
-  
-  selectedForProject  Project?  @relation("SelectedBid")
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+
+  seller   User   @relation("SellerBids", fields: [sellerId], references: [id])
+  sellerId String
+
+  selectedForProject Project? @relation("SelectedBid")
 }
 
 model Deliverable {
@@ -84,26 +81,26 @@ model Deliverable {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
   // Relations
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId   String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
 }
 
 model Review {
   id         String   @id @default(uuid())
-  rating      Int      @db.SmallInt
-  reviewText  String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  
+  rating     Int      @db.SmallInt
+  reviewText String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
   // Relations
-  buyer       User     @relation("BuyerReviews", fields: [buyerId], references: [id])
-  buyerId     String
-  
-  seller      User     @relation("SellerReviews", fields: [sellerId], references: [id])
-  sellerId    String
-  
-  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  projectId   String   @unique
+  buyer   User   @relation("BuyerReviews", fields: [buyerId], references: [id])
+  buyerId String
+
+  seller   User   @relation("SellerReviews", fields: [sellerId], references: [id])
+  sellerId String
+
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String  @unique
 }
