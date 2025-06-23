@@ -19,11 +19,11 @@ const app = express();
 const prisma = new PrismaClient();
 
 // Middleware
-app.use(helmet()); // Security headers
-app.use(morgan("dev")); // Logging
-app.use(cors()); // CORS
-app.use(express.json()); // Parse JSON bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
+app.use(helmet());
+app.use(morgan("dev"));
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // Make Prisma client available to routes
 app.use((req, res, next) => {
@@ -60,7 +60,7 @@ app.listen(PORT, () => {
 
 // Handle unhandled promise rejections
 process.on("unhandledRejection", (err) => {
-  console.log("UNHANDLED REJECTION! 💥 Shutting down...");
+  console.log("UNHANDLED REJECTION! Shutting down...");
   console.error(err.name, err.message);
   process.exit(1);
 });
